@@ -23,7 +23,6 @@ export default {
     login(){
       //通信ライブラリでdataを送る
       axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAR4HImtY6KRc9Mv0QjHsbWn0FLfl-JEgc",{
-        
         email:this.email,
         password:this.password
       })
