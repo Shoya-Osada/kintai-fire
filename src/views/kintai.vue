@@ -24,17 +24,21 @@ export default {
   data(){
     return{
       worklist:[],
+      username:"",
     }
 
   },
   methods:{
     start_work(){
+      //一時的に保存したデータを取得
+      this.username = sessionStorage.getItem('name')
+      console.log(this.username)
       //現在の年月日時を取得
       var start_date = new Date().toLocaleDateString()
       var start_time = new Date().toLocaleTimeString()
       console.log(start_date,start_time)
       //データベースにデータを送る
-      axios.post("https://fir-795b6-default-rtdb.firebaseio.com/user.json",{
+      axios.post("https://fir-795b6-default-rtdb.firebaseio.com/" + this.username +".json",{
         data:{
           date:start_date,
           time:start_time,
@@ -44,6 +48,7 @@ export default {
       })
       .then(response =>{
         console.log(response)
+        alert("出勤時間は" + start_date+start_time + "です")
       })
     },
 
@@ -52,13 +57,12 @@ export default {
       var end_date = new Date().toLocaleDateString()
       var end_time = new Date().toLocaleTimeString()
       console.log(end_date,end_time)
-      //データベースにデータを送る
-      axios.post("https://fir-795b6-default-rtdb.firebaseio.com/user.json",{
+      //データベースにデータを送る(動的にURLを変更)
+      axios.post("https://fir-795b6-default-rtdb.firebaseio.com/"+ this.username +".json",{
         data:{
           date:end_date,
           time:end_time,
           type:'退勤',
-          //number:1
         },
       })
       .then(response =>{
@@ -67,8 +71,8 @@ export default {
 
     },
     async datalist(){
-      //データベースからデータを取得
-     var box = await axios.get("https://fir-795b6-default-rtdb.firebaseio.com/user.json")
+      //データベースからデータを取得(動的にURLを変更)
+     var box = await axios.get("https://fir-795b6-default-rtdb.firebaseio.com/"+ this.username +".json")
      this.worklist = box.data
      console.log(this.worklist)
     }
