@@ -67,6 +67,7 @@ export default {
       })
       .then(response =>{
         console.log(response)
+        alert("出勤時間は" + end_date + end_time + "です")
       })
 
     },

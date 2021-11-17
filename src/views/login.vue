@@ -3,9 +3,8 @@
     <h1>ログイン画面</h1>
     <input type="text" v-model="email" placeholder="メールアドレスを入力">
     <div>
-      <input type="password" v-model="password" placeholder="パスワードを入力してください">
+      <input type="password" v-model="password" placeholder="パスワードを入力">
     </div>
-    
     <button @click="login">ログイン</button>
   </div>
 </template>
@@ -18,7 +17,6 @@ export default {
       email:"",
       password:"",
       userid:"",
-      
     }
   },
   methods:{
@@ -33,8 +31,8 @@ export default {
       //うまくいったときの処理
       .then(response => {
         console.log(response)
-        //新規ログインで作ったIDを取得してuseridにいれる。
-        self.userid = response.data.displayName
+        //localIdを取得してuseridにいれる。
+        self.userid = response.data.localId
         console.log(self.userid)
         //ブラウザを切った後に、消えるストレージに一時的に保存する
         sessionStorage.setItem('name',self.userid)
@@ -47,7 +45,6 @@ export default {
         //間違っていたら、打ち直し
         this.email = "";
         this.password = "";
-        this.dspname = "";
       })
     }
   }
