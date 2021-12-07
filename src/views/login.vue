@@ -7,6 +7,7 @@
     </div>
     <button @click="login">ログイン</button>
   </div>
+  
 </template>
 
 <script>
@@ -17,6 +18,7 @@ export default {
       email:"",
       password:"",
       userid:"",
+      text:"",
     }
   },
   methods:{
@@ -46,7 +48,7 @@ export default {
         this.email = "";
         this.password = "";
       })
-    }
+    },
   }
 }
 </script>

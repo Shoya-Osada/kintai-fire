@@ -10,8 +10,8 @@
           <th>退勤</th>
         </tr>
         <tr v-for="(item,index) in worklist" :key="index">
-          <td v-if="item.data.number == 0">{{item.data.date}}  {{item.data.time}}</td>
-          <td>{{item.data.date}}  {{item.data.time}}</td>
+          <td v-if="item.number == 0">{{item.date}}  {{item.time}}</td>
+          <td>{{item.date}}  {{item.time}}</td>
         </tr>
       </table>
     </div>
@@ -26,7 +26,6 @@ export default {
       worklist:[],
       username:"",
     }
-
   },
   methods:{
     start_work(){
@@ -37,15 +36,17 @@ export default {
       var start_date = new Date().toLocaleDateString()
       var start_time = new Date().toLocaleTimeString()
       console.log(start_date,start_time)
+
+      var box = {
+        "id":this.username,
+        "date":start_date,
+        "time":start_time,
+        "type":"出勤",
+        "number":0
+      }
+        
       //データベースにデータを送る
-      axios.post("https://fir-795b6-default-rtdb.firebaseio.com/" + this.username +".json",{
-        data:{
-          date:start_date,
-          time:start_time,
-          type:'出勤',
-          number:0
-        },
-      })
+      axios.post("https://3rh22uarg3.execute-api.us-east-1.amazonaws.com/kintaiApi/putitem",box)
       .then(response =>{
         console.log(response)
         alert("出勤時間は" + start_date+start_time + "です")
@@ -58,13 +59,14 @@ export default {
       var end_time = new Date().toLocaleTimeString()
       console.log(end_date,end_time)
       //データベースにデータを送る(動的にURLを変更)
-      axios.post("https://fir-795b6-default-rtdb.firebaseio.com/"+ this.username +".json",{
-        data:{
-          date:end_date,
-          time:end_time,
-          type:'退勤',
-        },
-      })
+      var box1 = {
+        "id":this.username,
+        "date":end_date,
+        "time":end_time,
+        "type":"退勤",
+        "number":"1"
+      }
+      axios.post("https://3rh22uarg3.execute-api.us-east-1.amazonaws.com/kintaiApi/putitem",box1)
       .then(response =>{
         console.log(response)
         alert("出勤時間は" + end_date + end_time + "です")
@@ -73,7 +75,7 @@ export default {
     },
     async datalist(){
       //データベースからデータを取得(動的にURLを変更)
-     var box = await axios.get("https://fir-795b6-default-rtdb.firebaseio.com/"+ this.username +".json")
+     var box = await axios.get("https://3rh22uarg3.execute-api.us-east-1.amazonaws.com/kintaiApi/getitem")
      this.worklist = box.data
      console.log(this.worklist)
     }
